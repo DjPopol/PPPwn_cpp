@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
             option("-rs", "--real-sleep").set(real_sleep), \
             "start a web page" % option("--web").set(web_page), \
             "custom web page url (default: 0.0.0.0:7796)" % option("--url") & value("url", web_url),
-            "show version" % option("--version").set(show_version)
+            "show version" % option("-v", "--version").set(show_version)
             ) | \
             "list interfaces" % command("list").call(listInterfaces)
     );
