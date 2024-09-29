@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (show_version) {
-        std::cout << "Version: " << PROJECT_VERSION << std::endl;
+        std::cout << PROJECT_VERSION << std::endl;
         return 0;
     }
     std::cout << "[+] PPPwn++ - PlayStation 4 PPPoE RCE by theflow" << std::endl;
