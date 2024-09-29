@@ -5,6 +5,7 @@
 #include <string>
 #include <PcapLiveDeviceList.h>
 #include <clipp.h>
+#include "version.h" 
 
 #include "exploit.h"
 #include "web.h"
