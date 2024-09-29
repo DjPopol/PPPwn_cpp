@@ -1,24 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 include(CMakeDependentOption)
-include(cmake/version.cmake)
 set(APP_BUILD_OPTIONS)
 set(APP_LINK_LIB)
-
-project(pppwn VERSION ${PROJECT_VERSION})
-
-configure_file(
-    "${CMAKE_SOURCE_DIR}/cmake/version.h.in"
-    "${CMAKE_BINARY_DIR}/version.h" @ONLY
-)
-
-include_directories("${CMAKE_BINARY_DIR}")
-
-add_definitions(
-    -DPROJECT_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}
-    -DPROJECT_VERSION_MINOR=${PROJECT_VERSION_MINOR}
-    -DPROJECT_VERSION_PATCH=${PROJECT_VERSION_PATCH}
-    -DPROJECT_VERSION="${PROJECT_VERSION}"
-)
 
 # Zig makes cross-compiling easier and ignores glibc version issue
 # target can be: x86_64-macos-none, x86_64-macos.11.0-none, x86_64-windows-gnu, mipsel-linux-musl, x86_64-linux-gnu.2.17, ...
