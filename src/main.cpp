@@ -196,17 +196,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    #ifdef _WIN32
-        if (show_version) {
-            std::cout << "Version: " << GetExecutableVersion() << std::endl;
-            return 0;
-        }
-    #else
-        if (show_version) {
-            std::cout << "Version: " << PROJECT_VERSION << std::endl;
-            return 0;
-        }
-    #endif
+    if (show_version) {
+        std::cout << "Version: " << PROJECT_VERSION << std::endl;
+        return 0;
+    }
     
     auto offset = getFirmwareOffset(fw);
     if (offset == FIRMWARE_UNKNOWN) {
