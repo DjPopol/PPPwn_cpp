@@ -126,6 +126,7 @@ int main(int argc, char *argv[]) {
     bool no_wait_padi = false;
     bool web_page = false;
     bool real_sleep = false;
+    bool show_version = false;
 
     auto cli = (
             ("network interface" % required("-i", "--interface") & value("interface", interface), \
@@ -145,7 +146,8 @@ int main(int argc, char *argv[]) {
             "Use CPU for more precise sleep time (Only used when execution speed is too slow)" %
             option("-rs", "--real-sleep").set(real_sleep), \
             "start a web page" % option("--web").set(web_page), \
-            "custom web page url (default: 0.0.0.0:7796)" % option("--url") & value("url", web_url)
+            "custom web page url (default: 0.0.0.0:7796)" % option("--url") & value("url", web_url),
+            "show version" % option("--version").set(show_version)
             ) | \
             "list interfaces" % command("list").call(listInterfaces)
     );
@@ -156,6 +158,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    if (show_version) {
+        std::cout << "Version: " << PROJECT_VERSION << std::endl;
+        return 0;
+    }
+    
     auto offset = getFirmwareOffset(fw);
     if (offset == FIRMWARE_UNKNOWN) {
         std::cerr << "[-] Invalid firmware version" << std::endl;
