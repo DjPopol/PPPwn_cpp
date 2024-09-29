@@ -6,9 +6,13 @@
 #include <PcapLiveDeviceList.h>
 #include <clipp.h>
 
+#ifdef UNIX
+    #include "version.h"
+#endif
+
 #if defined(__APPLE__)
 
-#include <SystemConfiguration/SystemConfiguration.h>
+    #include <SystemConfiguration/SystemConfiguration.h>
 
 #endif
 
@@ -112,6 +116,39 @@ static void signal_handler(int sig_num) {
     exit(sig_num);
 }
 
+#ifdef _WIN32
+    std::string GetExecutableVersion() {
+        char filename[MAX_PATH];
+        GetModuleFileNameA(NULL, filename, MAX_PATH);
+
+        DWORD dummy;
+        DWORD size = GetFileVersionInfoSizeA(filename, &dummy);
+
+        if (size == 0) {
+            return "Unknown version";
+        }
+
+        std::vector<char> data(size);
+        if (!GetFileVersionInfoA(filename, 0, size, data.data())) {
+            return "Unknown version";
+        }
+
+        VS_FIXEDFILEINFO* fileInfo = nullptr;
+        UINT len = sizeof(VS_FIXEDFILEINFO);
+
+        if (!VerQueryValueA(data.data(), "\\", reinterpret_cast<LPVOID*>(&fileInfo), &len)) {
+            return "Unknown version";
+        }
+
+        int major = HIWORD(fileInfo->dwFileVersionMS);
+        int minor = LOWORD(fileInfo->dwFileVersionMS);
+        int patch = HIWORD(fileInfo->dwFileVersionLS);
+        int build = LOWORD(fileInfo->dwFileVersionLS);
+
+        return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch) + "." + std::to_string(build);
+    }
+#endif
+
 int main(int argc, char *argv[]) {
     using namespace clipp;
     std::cout << "[+] PPPwn++ - PlayStation 4 PPPoE RCE by theflow" << std::endl;
@@ -146,9 +183,10 @@ int main(int argc, char *argv[]) {
             "Use CPU for more precise sleep time (Only used when execution speed is too slow)" %
             option("-rs", "--real-sleep").set(real_sleep), \
             "start a web page" % option("--web").set(web_page), \
-            "custom web page url (default: 0.0.0.0:7796)" % option("--url") & value("url", web_url)
+            "custom web page url (default: 0.0.0.0:7796)" % option("--url") & value("url", web_url),
+            "show version" % option("-v", "--version").set(show_version)
             ) | \
-            "list interfaces" % command("list").call(listInterfaces)  | \
+            "list interfaces" % command("list").call(listInterfaces) | \
             "show version" % option("-v", "--version").set(show_version)
     );
 
@@ -158,10 +196,17 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    if (show_version) {
-        std::cout << "Version: " << PROJECT_VERSION << std::endl;
-        return 0;
-    }
+    #ifdef _WIN32
+        if (show_version) {
+            std::cout << "Version: " << GetExecutableVersion() << std::endl;
+            return 0;
+        }
+    #else
+        if (show_version) {
+            std::cout << "Version: " << PROJECT_VERSION << std::endl;
+            return 0;
+        }
+    #endif
     
     auto offset = getFirmwareOffset(fw);
     if (offset == FIRMWARE_UNKNOWN) {
