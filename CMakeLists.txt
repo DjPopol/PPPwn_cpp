@@ -6,6 +6,13 @@ set(APP_LINK_LIB)
 
 project(pppwn VERSION ${PROJECT_VERSION})
 
+configure_file(
+    "${CMAKE_SOURCE_DIR}/cmake/version.h.in"
+    "${CMAKE_BINARY_DIR}/version.h" @ONLY
+)
+
+include_directories("${CMAKE_BINARY_DIR}")
+
 add_definitions(
     -DPROJECT_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}
     -DPROJECT_VERSION_MINOR=${PROJECT_VERSION_MINOR}
