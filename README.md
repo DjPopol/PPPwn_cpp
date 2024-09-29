@@ -53,6 +53,7 @@ pppwn --interface en0 --fw 1100 --stage1 "stage1.bin" --stage2 "stage2.bin" --ti
 - `-rs` `--real-sleep`: use CPU for more precise sleep time (Only used when execution speed is too slow)
 - `--web`: use the web interface
 - `--url`: the url of the web interface (default: `0.0.0.0:7796`)
+- `-v` `--version`: show version
 
 Supplement:
 
