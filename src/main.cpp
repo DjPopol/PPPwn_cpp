@@ -6,16 +6,6 @@
 #include <PcapLiveDeviceList.h>
 #include <clipp.h>
 
-#ifdef UNIX
-    #include "version.h"
-#endif
-
-#if defined(__APPLE__)
-
-    #include <SystemConfiguration/SystemConfiguration.h>
-
-#endif
-
 #include "exploit.h"
 #include "web.h"
 
