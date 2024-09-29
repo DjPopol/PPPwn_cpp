@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 include(CMakeDependentOption)
+include(cmake/version.cmake)
 set(APP_BUILD_OPTIONS)
 set(APP_LINK_LIB)
 
