@@ -15,6 +15,8 @@
 #include "exploit.h"
 #include "web.h"
 
+const std::string PROJECT_VERSION = "1.0.0";
+
 std::vector<uint8_t> readBinary(const std::string &filename) {
     std::ifstream file(filename, std::ios::binary | std::ios::ate);
     if (!file) {
@@ -147,7 +149,8 @@ int main(int argc, char *argv[]) {
             "start a web page" % option("--web").set(web_page), \
             "custom web page url (default: 0.0.0.0:7796)" % option("--url") & value("url", web_url)
             ) | \
-            "list interfaces" % command("list").call(listInterfaces)
+            "list interfaces" % command("list").call(listInterfaces) | \
+            "show version" % option("-v", "--version").set(show_version)
     );
 
     auto result = parse(argc, argv, cli);
@@ -156,6 +159,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    if (show_version) {
+        std::cout << "Version: " << PROJECT_VERSION << std::endl;
+        return 0;
+    }
+    
     auto offset = getFirmwareOffset(fw);
     if (offset == FIRMWARE_UNKNOWN) {
         std::cerr << "[-] Invalid firmware version" << std::endl;
