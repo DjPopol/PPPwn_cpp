@@ -116,7 +116,6 @@ static void signal_handler(int sig_num) {
 
 int main(int argc, char *argv[]) {
     using namespace clipp;
-    std::cout << "[+] PPPwn++ - PlayStation 4 PPPoE RCE by theflow" << std::endl;
     std::string interface, stage1 = "stage1/stage1.bin", stage2 = "stage2/stage2.bin";
     std::string web_url = "0.0.0.0:7796";
     int fw = 1100;
@@ -156,6 +155,7 @@ int main(int argc, char *argv[]) {
 
     auto result = parse(argc, argv, cli);
     if (!result) {
+        std::cout << "[+] PPPwn++ - PlayStation 4 PPPoE RCE by theflow" << std::endl;
         std::cout << make_man_page(cli, "pppwn");
         return 1;
     }
@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
         std::cout << "Version: " << PROJECT_VERSION << std::endl;
         return 0;
     }
-    
+    std::cout << "[+] PPPwn++ - PlayStation 4 PPPoE RCE by theflow" << std::endl;
     auto offset = getFirmwareOffset(fw);
     if (offset == FIRMWARE_UNKNOWN) {
         std::cerr << "[-] Invalid firmware version" << std::endl;
