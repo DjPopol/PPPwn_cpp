@@ -6,6 +6,12 @@
 #include <PcapLiveDeviceList.h>
 #include <clipp.h>
 
+#if defined(__APPLE__)
+
+#include <SystemConfiguration/SystemConfiguration.h>
+
+#endif
+
 #include "exploit.h"
 #include "web.h"
 
@@ -120,7 +126,6 @@ int main(int argc, char *argv[]) {
     bool no_wait_padi = false;
     bool web_page = false;
     bool real_sleep = false;
-    bool show_version = false;
 
     auto cli = (
             ("network interface" % required("-i", "--interface") & value("interface", interface), \
@@ -150,7 +155,7 @@ int main(int argc, char *argv[]) {
         std::cout << make_man_page(cli, "pppwn");
         return 1;
     }
-    
+
     auto offset = getFirmwareOffset(fw);
     if (offset == FIRMWARE_UNKNOWN) {
         std::cerr << "[-] Invalid firmware version" << std::endl;
