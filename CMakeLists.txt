@@ -4,32 +4,14 @@ include(cmake/version.cmake)
 set(APP_BUILD_OPTIONS)
 set(APP_LINK_LIB)
 
-if (APPLE)
-    configure_file(
-        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Info.plist.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/Info.plist" @ONLY
-    )
-endif()
+project(pppwn VERSION ${PROJECT_VERSION})
 
-if(WIN32)
-    set_source_files_properties("${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc" PROPERTIES LANGUAGE RC)
-    target_sources(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc")
-endif()
-
-if(UNIX AND NOT APPLE)
-    configure_file(
-        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.h.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/version.h" @ONLY
-    )
-    target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
-endif()
-
-if(APPLE)
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE TRUE
-        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/Info.plist"
-    )
-endif()
+add_definitions(
+    -DPROJECT_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}
+    -DPROJECT_VERSION_MINOR=${PROJECT_VERSION_MINOR}
+    -DPROJECT_VERSION_PATCH=${PROJECT_VERSION_PATCH}
+    -DPROJECT_VERSION="${PROJECT_VERSION}"
+)
 
 # Zig makes cross-compiling easier and ignores glibc version issue
 # target can be: x86_64-macos-none, x86_64-macos.11.0-none, x86_64-windows-gnu, mipsel-linux-musl, x86_64-linux-gnu.2.17, ...
