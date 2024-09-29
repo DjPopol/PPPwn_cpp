@@ -1,14 +1,34 @@
 cmake_minimum_required(VERSION 3.12)
 include(CMakeDependentOption)
+include(cmake/version.cmake)
 set(APP_BUILD_OPTIONS)
 set(APP_LINK_LIB)
 
-if (WIN32)
-    set(RESOURCE_FILES version.rc)
-elseif (UNIX AND NOT APPLE)
-    add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
-elseif (APPLE)
-    add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
+if (APPLE)
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Info.plist.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/Info.plist" @ONLY
+    )
+endif()
+
+if(WIN32)
+    set_source_files_properties("${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc" PROPERTIES LANGUAGE RC)
+    target_sources(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc")
+endif()
+
+if(UNIX AND NOT APPLE)
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.h.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/version.h" @ONLY
+    )
+    target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+endif()
+
+if(APPLE)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/Info.plist"
+    )
 endif()
 
 # Zig makes cross-compiling easier and ignores glibc version issue
