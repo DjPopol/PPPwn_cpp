@@ -12,7 +12,7 @@ This is the C++ rewrite of [PPPwn](https://github.com/TheOfficialFloW/PPPwn)
 
 # Nightly build
 
-You can download the latest build from [https://github.com/DjPopol/PPPwn_cpp/releases/](https://github.com/DjPopol/PPPwn_cpp/releases/).
+You can download the latest build from [https://github.com/DjPopol/PPPwn_cpp/releases/latest](https://github.com/DjPopol/PPPwn_cpp/releases/latest).
 
 For Windows users, you need to install [npcap](https://npcap.com) before run this program.
 There are lots of GUI wrapper for pppwn_cpp, it's better to use them if you are not familiar with command line.
