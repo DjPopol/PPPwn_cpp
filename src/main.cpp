@@ -5,7 +5,6 @@
 #include <string>
 #include <PcapLiveDeviceList.h>
 #include <clipp.h>
-#include "version.h" 
 
 #include "exploit.h"
 #include "web.h"
@@ -141,22 +140,15 @@ int main(int argc, char *argv[]) {
             "Use CPU for more precise sleep time (Only used when execution speed is too slow)" %
             option("-rs", "--real-sleep").set(real_sleep), \
             "start a web page" % option("--web").set(web_page), \
-            "custom web page url (default: 0.0.0.0:7796)" % option("--url") & value("url", web_url),
-            "show version" % option("-v", "--version").set(show_version)
+            "custom web page url (default: 0.0.0.0:7796)" % option("--url") & value("url", web_url)
             ) | \
-            "list interfaces" % command("list").call(listInterfaces) | \
-            "show version" % option("-v", "--version").set(show_version)
+            "list interfaces" % command("list").call(listInterfaces)
     );
 
     auto result = parse(argc, argv, cli);
     if (!result) {
         std::cout << make_man_page(cli, "pppwn");
         return 1;
-    }
-
-    if (show_version) {
-        std::cout << "Version: " << PROJECT_VERSION << std::endl;
-        return 0;
     }
     
     auto offset = getFirmwareOffset(fw);
