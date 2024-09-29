@@ -128,7 +128,8 @@ int main(int argc, char *argv[]) {
     bool no_wait_padi = false;
     bool web_page = false;
     bool real_sleep = false;
-
+    bool show_version = false;
+    
     auto cli = (
             ("network interface" % required("-i", "--interface") & value("interface", interface), \
             SUPPORTED_FIRMWARE % option("--fw") & integer("fw", fw), \
