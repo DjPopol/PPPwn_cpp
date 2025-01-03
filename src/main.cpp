@@ -15,7 +15,7 @@
 #include "exploit.h"
 #include "web.h"
 
-const std::string PROJECT_VERSION = "1.0.1";
+const std::string PROJECT_VERSION = "1.0.2";
 
 std::vector<uint8_t> readBinary(const std::string &filename) {
     std::ifstream file(filename, std::ios::binary | std::ios::ate);
